@@ -8,8 +8,6 @@ asdf
 
 ## Main process vs renderer process
 
-### What's the difference?
-
 If you’ve only lived in the typical world of web development, Electron’s Process Model can feel a bit jarring at first glance.
 However, if you already think in "frontend vs backend", the split maps quite well:
 
@@ -37,12 +35,32 @@ flowchart LR
 
 The Electron documentation on their [Process Model](https://www.electronjs.org/docs/latest/tutorial/process-model) goes into greater depth on the subject.
 
-### How does this affect me using PowerSync
+## Where does PowerSync go?
 
-Currently, PowerSync offers both
+This comes to the heart of this whole blog — it's up to you!
+
+Currently, PowerSync offers SDKs for both [Node.js](https://docs.powersync.com/client-sdk-references/node) and [web clients](https://docs.powersync.com/client-sdk-references/javascript-web) — meaning you have *two choices* for how you can build a local-first Electron app with PowerSync.
+Notably, the experience between these two implementations is quite different.
+The SDK you choose will shape how your app handles data sync and offline behavior.
+Plus, the developer experience between the two will be quite different.
+
+### Comparing the two implementations
+
+#### PowerSync in the Main Process - [Node.JS SDK](https://docs.powersync.com/client-sdk-references/node)
+
+- Faster query performance due to system-native SQLite driver (via [better-sqlite3](https://github.com/WiseLibs/better-sqlite3))
+- Leaves the query processing off of the renderer, allowing for snappier UI
+  - **CHECK** - is this actually true? I recall reading that [blocking the main process](https://www.electronjs.org/docs/latest/tutorial/performance#3-blocking-the-main-process) can slow the renderer down indirectly since the main process is the control-tower of the whole app
+- Performant multi-window or support when relying on the same data
+  - **CHECK** - I'm unfamiliar with how electron handles multi-window. Is this true?
+
+#### PowerSync in the Renderer Process - [Web Client SDKs](https://docs.powersync.com/client-sdk-references/javascript-web)
+
+- Simpler setup - no IPC communication needed
+- Easy portability of your code from an Electron desktop app to a hosted web app
+- Use of PowerSync's custom hooks for UI reactivity (React/Vue)
 
 ## Benchmarking the two processes
-
 
 | Test | Description | Node (sec) | Web (sec) | Speedup |
 |------|-------------|------------|-----------|---------|
