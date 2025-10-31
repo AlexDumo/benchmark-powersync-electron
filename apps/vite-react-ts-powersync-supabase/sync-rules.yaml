@@ -1,8 +1,25 @@
 bucket_definitions:
   global: # The data in the global bucket is synced to all users
-    data: 
+    data:
     - SELECT * FROM counters
-  
+    # Benchmark tables for performance testing
+    - SELECT * FROM t1
+    - SELECT * FROM t2
+    - SELECT * FROM t3
+    - SELECT * FROM t4
+    - SELECT * FROM t5
+    - SELECT * FROM t7
+    - SELECT * FROM t8
+    - SELECT * FROM t9
+    - SELECT * FROM t10
+    - SELECT * FROM t11
+    - SELECT * FROM t11_source
+    - SELECT * FROM t12
+    - SELECT * FROM t13
+    - SELECT * FROM t14
+    - SELECT * FROM t15
+    - SELECT * FROM t16
+
   # The bucket below will only be synced to the user who created it
   # To read more about sync rules and buckets, see https://docs.powersync.com/usage/sync-rules/organize-data-into-buckets
   # user_specific_counters:

@@ -25,7 +25,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@faker-js/faker": "^9.9.0"
+    "@faker-js/faker": "^9.9.0",
+    "@powersync/web": "^1.0.0"
   },
   "devDependencies": {
     "typescript": "^5.9.3"
