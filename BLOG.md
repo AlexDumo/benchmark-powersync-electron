@@ -43,16 +43,6 @@ Currently, PowerSync offers both
 
 ## Benchmarking the two processes
 
-**Node Benchmark:**
-- File: `benchmark-node-results-2025-10-31T03-04-02-997Z.json`
-- Timestamp: 2025-10-31T03:04:02.997Z
-- Engine: better-sqlite3
-- SDK Version: 0.4.6/e15ce733
-
-**Web Benchmark:**
-- File: `benchmark-web-results-2025-10-31T02_42_02.226Z.json`
-
-## Results
 
 | Test | Description | Node (sec) | Web (sec) | Speedup |
 |------|-------------|------------|-----------|---------|
@@ -70,8 +60,6 @@ Currently, PowerSync offers both
 | 14 | A big INSERT after a big DELETE | 13.583 | 13.309 | 0.98x |
 | 15 | A big DELETE followed by many small INSERTs | 9.862 | 33.232 | 3.37x |
 | 16 | Clear table | 4.924 | 5.366 | 1.09x |
-
-## Summary
 
 - **Total Node Time**: 96.846 seconds
 - **Total Web Time**: 153.809 seconds
