@@ -1,6 +1,7 @@
 import { PowerSyncDatabase } from "@powersync/node";
 import { PowerSyncTests } from "sql-gen";
 import * as fs from 'fs';
+import * as path from 'path';
 
 export interface BenchmarkResult {
   testNumber: number;
@@ -32,8 +33,35 @@ export class BenchmarkRunner {
 
     const startTime = performance.now();
 
-    for (const sql of sqlStatements) {
-      await this.db.execute(sql);
+    // Check if this test uses transactions (has BEGIN/COMMIT)
+    const hasTransaction = sqlStatements.some(sql => sql.trim().toUpperCase() === 'BEGIN;');
+
+    if (hasTransaction) {
+      // Find BEGIN and COMMIT indices
+      const beginIndex = sqlStatements.findIndex(sql => sql.trim().toUpperCase() === 'BEGIN;');
+      const commitIndex = sqlStatements.findIndex(sql => sql.trim().toUpperCase() === 'COMMIT;');
+
+      // Execute statements before BEGIN
+      for (let i = 0; i < beginIndex; i++) {
+        await this.db.execute(sqlStatements[i]);
+      }
+
+      // Execute statements between BEGIN and COMMIT in a writeTransaction
+      await this.db.writeTransaction(async (tx) => {
+        for (let i = beginIndex + 1; i < commitIndex; i++) {
+          await tx.execute(sqlStatements[i]);
+        }
+      });
+
+      // Execute statements after COMMIT
+      for (let i = commitIndex + 1; i < sqlStatements.length; i++) {
+        await this.db.execute(sqlStatements[i]);
+      }
+    } else {
+      // No transaction, execute all statements normally
+      for (const sql of sqlStatements) {
+        await this.db.execute(sql);
+      }
     }
 
     const duration = (performance.now() - startTime) / 1000;
@@ -113,8 +141,15 @@ export class BenchmarkRunner {
   }
 
   exportResults(results: BenchmarkResult[], filename?: string) {
+    const resultsDir = path.join(process.cwd(), 'results');
+
+    // Create results directory if it doesn't exist
+    if (!fs.existsSync(resultsDir)) {
+      fs.mkdirSync(resultsDir, { recursive: true });
+    }
+
     const defaultFilename = `benchmark-node-results-${new Date().toISOString().replace(/[:.]/g, '-')}.json`;
-    const outputFile = filename || defaultFilename;
+    const outputFile = path.join(resultsDir, filename || defaultFilename);
 
     const data = {
       timestamp: new Date().toISOString(),

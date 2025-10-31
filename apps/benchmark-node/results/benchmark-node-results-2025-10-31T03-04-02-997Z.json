@@ -1,0 +1,91 @@
+{
+  "timestamp": "2025-10-31T03:04:02.997Z",
+  "engine": "better-sqlite3",
+  "sdkVersion": "0.4.6/e15ce733",
+  "results": [
+    {
+      "testNumber": 1,
+      "testDescription": "Test 1: 1000 INSERTs",
+      "duration": 0.4566856250000001,
+      "statementsExecuted": 1001
+    },
+    {
+      "testNumber": 2,
+      "testDescription": "Test 2: 25000 INSERTs in a transaction",
+      "duration": 4.798780292000001,
+      "statementsExecuted": 25003
+    },
+    {
+      "testNumber": 4,
+      "testDescription": "Test 4: 100 SELECTs without an index",
+      "duration": 4.670627125000001,
+      "statementsExecuted": 25103
+    },
+    {
+      "testNumber": 5,
+      "testDescription": "Test 5: 100 SELECTs on a string comparison",
+      "duration": 5.764496125000002,
+      "statementsExecuted": 25103
+    },
+    {
+      "testNumber": 7,
+      "testDescription": "Test 7: 5000 SELECTs using primary key",
+      "duration": 5.676196500000001,
+      "statementsExecuted": 30003
+    },
+    {
+      "testNumber": 8,
+      "testDescription": "Test 8: 1000 UPDATEs without an index",
+      "duration": 11.588809874999995,
+      "statementsExecuted": 26003
+    },
+    {
+      "testNumber": 9,
+      "testDescription": "Test 9: 25000 UPDATEs using primary key",
+      "duration": 11.32041775,
+      "statementsExecuted": 50005
+    },
+    {
+      "testNumber": 10,
+      "testDescription": "Test 10: 25000 text UPDATEs using primary key",
+      "duration": 10.346299583,
+      "statementsExecuted": 50005
+    },
+    {
+      "testNumber": 11,
+      "testDescription": "Test 11: INSERTs from a SELECT",
+      "duration": 4.490476375000005,
+      "statementsExecuted": 25005
+    },
+    {
+      "testNumber": 12,
+      "testDescription": "Test 12: DELETE without an index",
+      "duration": 4.841069832999994,
+      "statementsExecuted": 25004
+    },
+    {
+      "testNumber": 13,
+      "testDescription": "Test 13: DELETE using primary key",
+      "duration": 4.522450415999993,
+      "statementsExecuted": 25028
+    },
+    {
+      "testNumber": 14,
+      "testDescription": "Test 14: A big INSERT after a big DELETE",
+      "duration": 13.58276879100001,
+      "statementsExecuted": 50006
+    },
+    {
+      "testNumber": 15,
+      "testDescription": "Test 15: A big DELETE followed by many small INSERTs",
+      "duration": 9.862364457999997,
+      "statementsExecuted": 37004
+    },
+    {
+      "testNumber": 16,
+      "testDescription": "Test 16: Clear table",
+      "duration": 4.924279791000008,
+      "statementsExecuted": 25004
+    }
+  ]
+}

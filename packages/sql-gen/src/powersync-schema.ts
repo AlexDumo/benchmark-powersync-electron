@@ -1,4 +1,4 @@
-import { column, Schema, Table } from '@powersync/web';
+import { column, Schema, Table } from '@powersync/common';
 
 // Standard benchmark table structure with 3 columns
 // PowerSync will automatically add an 'id' column as the primary key

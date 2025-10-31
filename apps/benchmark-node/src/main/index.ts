@@ -40,6 +40,7 @@ async function main() {
     // Disconnect
     await db.disconnectAndClear();
     console.log('\n✅ Benchmark completed successfully');
+    process.exit(0);
 
   } catch (error) {
     console.error('Error running benchmarks:', error);
