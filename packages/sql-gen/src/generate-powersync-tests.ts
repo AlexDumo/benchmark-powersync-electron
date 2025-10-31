@@ -56,32 +56,6 @@ export const test2 = (seed = 42): TestResult => {
     };
 };
 
-// Test 3: 25000 INSERTs into an indexed table
-export const test3 = (seed = 42): TestResult => {
-    faker.seed(seed);
-    const statements: string[] = [
-        'DELETE FROM t3;',
-        'CREATE INDEX IF NOT EXISTS i3a ON t3(a);',
-        'CREATE INDEX IF NOT EXISTS i3b ON t3(b);',
-        'BEGIN;'
-    ];
-
-    for (let i = 0; i < 25000; i++) {
-        const id = generateId();
-        const a = faker.number.int({ min: 1, max: 100000 });
-        const b = faker.number.int({ min: 1, max: 100000 });
-        const c = faker.string.alphanumeric(100);
-        statements.push(`INSERT INTO t3 (id, a, b, c) VALUES('${id}', ${a}, ${b}, '${c}');`);
-    }
-
-    statements.push('COMMIT;');
-
-    return {
-        testDescription: 'Test 3: 25000 INSERTs into an indexed table',
-        sqlStatements: statements
-    };
-};
-
 // Test 4: 100 SELECTs without an index
 export const test4 = (seed = 42): TestResult => {
     faker.seed(seed);
@@ -144,7 +118,7 @@ export const test5 = (seed = 42): TestResult => {
     };
 };
 
-// Test 7: 5000 SELECTs with an index
+// Test 7: 5000 SELECTs using primary key
 export const test7 = (seed = 42): TestResult => {
     faker.seed(seed);
     const statements: string[] = [
@@ -152,9 +126,13 @@ export const test7 = (seed = 42): TestResult => {
         'BEGIN;'
     ];
 
+    // Store IDs for later queries
+    const ids: string[] = [];
+
     // Populate the table
     for (let i = 0; i < 25000; i++) {
         const id = generateId();
+        ids.push(id);
         const a = faker.number.int({ min: 1, max: 100000 });
         const b = faker.number.int({ min: 1, max: 100000 });
         const c = faker.string.alphanumeric(100);
@@ -162,16 +140,15 @@ export const test7 = (seed = 42): TestResult => {
     }
 
     statements.push('COMMIT;');
-    statements.push('CREATE INDEX IF NOT EXISTS i7 ON t7(a);');
 
-    // Now do 5000 SELECTs with index
+    // Now do 5000 SELECTs using primary key
     for (let i = 0; i < 5000; i++) {
-        const value = faker.number.int({ min: 1, max: 100000 });
-        statements.push(`SELECT count(*), avg(b) FROM t7 WHERE a=${value};`);
+        const randomId = ids[faker.number.int({ min: 0, max: ids.length - 1 })];
+        statements.push(`SELECT count(*), avg(b) FROM t7 WHERE id='${randomId}';`);
     }
 
     return {
-        testDescription: 'Test 7: 5000 SELECTs with an index',
+        testDescription: 'Test 7: 5000 SELECTs using primary key',
         sqlStatements: statements
     };
 };
@@ -207,7 +184,7 @@ export const test8 = (seed = 42): TestResult => {
     };
 };
 
-// Test 9: 25000 UPDATEs with an index
+// Test 9: 25000 UPDATEs using primary key
 export const test9 = (seed = 42): TestResult => {
     faker.seed(seed);
     const statements: string[] = [
@@ -229,24 +206,22 @@ export const test9 = (seed = 42): TestResult => {
     }
 
     statements.push('COMMIT;');
-    statements.push('CREATE INDEX IF NOT EXISTS i9 ON t9(a);');
     statements.push('BEGIN;');
 
-    // Now do 25000 UPDATEs using the sequential 'a' values
+    // Now do 25000 UPDATEs using the primary key
     for (let i = 0; i < 25000; i++) {
-        const aValue = i + 1;
-        statements.push(`UPDATE t9 SET b=b+1 WHERE a=${aValue};`);
+        statements.push(`UPDATE t9 SET b=b+1 WHERE id='${ids[i]}';`);
     }
 
     statements.push('COMMIT;');
 
     return {
-        testDescription: 'Test 9: 25000 UPDATEs with an index',
+        testDescription: 'Test 9: 25000 UPDATEs using primary key',
         sqlStatements: statements
     };
 };
 
-// Test 10: 25000 text UPDATEs with an index
+// Test 10: 25000 text UPDATEs using primary key
 export const test10 = (seed = 42): TestResult => {
     faker.seed(seed);
     const statements: string[] = [
@@ -254,9 +229,13 @@ export const test10 = (seed = 42): TestResult => {
         'BEGIN;'
     ];
 
+    // Store IDs for later updates
+    const ids: string[] = [];
+
     // Populate the table
     for (let i = 0; i < 25000; i++) {
         const id = generateId();
+        ids.push(id);
         const a = i + 1;
         const b = faker.number.int({ min: 1, max: 100000 });
         const c = faker.string.alphanumeric(100);
@@ -264,20 +243,18 @@ export const test10 = (seed = 42): TestResult => {
     }
 
     statements.push('COMMIT;');
-    statements.push('CREATE INDEX IF NOT EXISTS i10 ON t10(a);');
     statements.push('BEGIN;');
 
-    // Now do 25000 text UPDATEs
+    // Now do 25000 text UPDATEs using primary key
     for (let i = 0; i < 25000; i++) {
-        const aValue = i + 1;
         const newText = faker.string.alphanumeric(100);
-        statements.push(`UPDATE t10 SET c='${newText}' WHERE a=${aValue};`);
+        statements.push(`UPDATE t10 SET c='${newText}' WHERE id='${ids[i]}';`);
     }
 
     statements.push('COMMIT;');
 
     return {
-        testDescription: 'Test 10: 25000 text UPDATEs with an index',
+        testDescription: 'Test 10: 25000 text UPDATEs using primary key',
         sqlStatements: statements
     };
 };
@@ -339,7 +316,7 @@ export const test12 = (seed = 42): TestResult => {
     };
 };
 
-// Test 13: DELETE with an index
+// Test 13: DELETE using primary key
 export const test13 = (seed = 42): TestResult => {
     faker.seed(seed);
     const statements: string[] = [
@@ -347,23 +324,35 @@ export const test13 = (seed = 42): TestResult => {
         'BEGIN;'
     ];
 
+    // Collect IDs where a < 50000 for deletion
+    const idsToDelete: string[] = [];
+
     // Populate the table
     for (let i = 0; i < 25000; i++) {
         const id = generateId();
         const a = faker.number.int({ min: 1, max: 100000 });
         const b = faker.number.int({ min: 1, max: 100000 });
         const c = faker.string.alphanumeric(100);
+
+        if (a < 50000) {
+            idsToDelete.push(id);
+        }
+
         statements.push(`INSERT INTO t13 (id, a, b, c) VALUES('${id}', ${a}, ${b}, '${c}');`);
     }
 
     statements.push('COMMIT;');
-    statements.push('CREATE INDEX IF NOT EXISTS i13 ON t13(a);');
 
-    // Delete some rows
-    statements.push('DELETE FROM t13 WHERE a < 50000;');
+    // Delete rows using primary key - split into batches to avoid SQL statement length limits
+    const batchSize = 500;
+    for (let i = 0; i < idsToDelete.length; i += batchSize) {
+        const batch = idsToDelete.slice(i, i + batchSize);
+        const idList = batch.map(id => `'${id}'`).join(',');
+        statements.push(`DELETE FROM t13 WHERE id IN (${idList});`);
+    }
 
     return {
-        testDescription: 'Test 13: DELETE with an index',
+        testDescription: 'Test 13: DELETE using primary key',
         sqlStatements: statements
     };
 };

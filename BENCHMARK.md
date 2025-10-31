@@ -8,23 +8,22 @@ This benchmark suite compares PowerSync performance between two SQLite implement
 
 All tests run against the same PowerSync schema with local Supabase and PowerSync instances.
 
-### The 15 Standard Tests
+### The 14 Standard Tests
 
 1. **Test 1**: 1000 INSERTs
 2. **Test 2**: 25000 INSERTs in a transaction
-3. **Test 3**: 25000 INSERTs into an indexed table
-4. **Test 4**: 100 SELECTs without an index
-5. **Test 5**: 100 SELECTs on a string comparison
-6. **Test 7**: 5000 SELECTs with an index
-7. **Test 8**: 1000 UPDATEs without an index
-8. **Test 9**: 25000 UPDATEs with an index
-9. **Test 10**: 25000 text UPDATEs with an index
-10. **Test 11**: INSERTs from a SELECT
-11. **Test 12**: DELETE without an index
-12. **Test 13**: DELETE with an index
-13. **Test 14**: A big INSERT after a big DELETE
-14. **Test 15**: A big DELETE followed by many small INSERTs
-15. **Test 16**: Clear table
+3. **Test 4**: 100 SELECTs without an index
+4. **Test 5**: 100 SELECTs on a string comparison
+5. **Test 7**: 5000 SELECTs using primary key
+6. **Test 8**: 1000 UPDATEs without an index
+7. **Test 9**: 25000 UPDATEs using primary key
+8. **Test 10**: 25000 text UPDATEs using primary key
+9. **Test 11**: INSERTs from a SELECT
+10. **Test 12**: DELETE without an index
+11. **Test 13**: DELETE using primary key
+12. **Test 14**: A big INSERT after a big DELETE
+13. **Test 15**: A big DELETE followed by many small INSERTs
+14. **Test 16**: Clear table
 
 ## Quick Start
 

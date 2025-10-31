@@ -1,0 +1,86 @@
+[
+  {
+    "testNumber": 1,
+    "testDescription": "Test 1: 1000 INSERTs",
+    "duration": 2.4974000000022354,
+    "statementsExecuted": 1001
+  },
+  {
+    "testNumber": 2,
+    "testDescription": "Test 2: 25000 INSERTs in a transaction",
+    "duration": 6.796,
+    "statementsExecuted": 25003
+  },
+  {
+    "testNumber": 4,
+    "testDescription": "Test 4: 100 SELECTs without an index",
+    "duration": 7.465199999999255,
+    "statementsExecuted": 25103
+  },
+  {
+    "testNumber": 5,
+    "testDescription": "Test 5: 100 SELECTs on a string comparison",
+    "duration": 8.169699999999255,
+    "statementsExecuted": 25103
+  },
+  {
+    "testNumber": 7,
+    "testDescription": "Test 7: 5000 SELECTs using primary key",
+    "duration": 7.52589999999851,
+    "statementsExecuted": 30003
+  },
+  {
+    "testNumber": 8,
+    "testDescription": "Test 8: 1000 UPDATEs without an index",
+    "duration": 21.39,
+    "statementsExecuted": 26003
+  },
+  {
+    "testNumber": 9,
+    "testDescription": "Test 9: 25000 UPDATEs using primary key",
+    "duration": 13.470099999997764,
+    "statementsExecuted": 50005
+  },
+  {
+    "testNumber": 10,
+    "testDescription": "Test 10: 25000 text UPDATEs using primary key",
+    "duration": 13.570400000002236,
+    "statementsExecuted": 50005
+  },
+  {
+    "testNumber": 11,
+    "testDescription": "Test 11: INSERTs from a SELECT",
+    "duration": 7.122199999999255,
+    "statementsExecuted": 25005
+  },
+  {
+    "testNumber": 12,
+    "testDescription": "Test 12: DELETE without an index",
+    "duration": 6.430099999997765,
+    "statementsExecuted": 25004
+  },
+  {
+    "testNumber": 13,
+    "testDescription": "Test 13: DELETE using primary key",
+    "duration": 7.465199999999255,
+    "statementsExecuted": 25028
+  },
+  {
+    "testNumber": 14,
+    "testDescription": "Test 14: A big INSERT after a big DELETE",
+    "duration": 13.30860000000149,
+    "statementsExecuted": 50006
+  },
+  {
+    "testNumber": 15,
+    "testDescription": "Test 15: A big DELETE followed by many small INSERTs",
+    "duration": 33.231800000000746,
+    "statementsExecuted": 37004
+  },
+  {
+    "testNumber": 16,
+    "testDescription": "Test 16: Clear table",
+    "duration": 5.366,
+    "statementsExecuted": 25004
+  }
+]

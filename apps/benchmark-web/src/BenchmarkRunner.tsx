@@ -16,7 +16,7 @@ export default function BenchmarkRunner() {
   const [results, setResults] = useState<BenchmarkResult[]>([]);
   const [currentTest, setCurrentTest] = useState<string | null>(null);
 
-  const allTestNumbers = [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+  const allTestNumbers = [1, 2, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
 
   const runSingleTest = async (testNum: number, seed = 42) => {
     const testKey = `test${testNum}` as keyof typeof PowerSyncTests;
@@ -37,9 +37,9 @@ export default function BenchmarkRunner() {
       await powerSync.execute(sql);
     }
 
-    const duration = performance.now() - startTime;
+    const duration = (performance.now() - startTime) / 1000;
 
-    console.log(`Completed in ${duration.toFixed(2)}ms`);
+    console.log(`Completed in ${duration.toFixed(2)}s`);
 
     return {
       testNumber: testNum,
@@ -74,7 +74,7 @@ export default function BenchmarkRunner() {
     setRunning(true);
     setResults([]);
 
-    const quickTests = [1, 2, 3];
+    const quickTests = [1, 2, 4];
     const newResults: BenchmarkResult[] = [];
 
     try {
@@ -129,7 +129,7 @@ export default function BenchmarkRunner() {
           disabled={running}
           className="btn btn-primary"
         >
-          {running ? 'Running...' : 'Run Quick Tests (1-3)'}
+          {running ? 'Running...' : 'Run Quick Tests (1, 2, 4)'}
         </button>
 
         <button
@@ -166,10 +166,10 @@ export default function BenchmarkRunner() {
               <strong>Total Tests:</strong> {results.length}
             </div>
             <div className="summary-item">
-              <strong>Total Time:</strong> {totalDuration.toFixed(2)}ms
+              <strong>Total Time:</strong> {totalDuration.toFixed(2)}s
             </div>
             <div className="summary-item">
-              <strong>Average Time:</strong> {averageDuration.toFixed(2)}ms
+              <strong>Average Time:</strong> {averageDuration.toFixed(2)}s
             </div>
           </div>
 
@@ -178,7 +178,7 @@ export default function BenchmarkRunner() {
               <tr>
                 <th>Test #</th>
                 <th>Description</th>
-                <th>Duration (ms)</th>
+                <th>Duration (s)</th>
                 <th>Statements</th>
               </tr>
             </thead>

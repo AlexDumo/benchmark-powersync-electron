@@ -82,7 +82,7 @@ CREATE TABLE t1 (
 );
 ```
 
-Tables t3, t7, t9, t10, and t13 also include indexes on column `a` and/or `b`.
+Tests that require indexed lookups (7, 9, 10, 13) use the primary key (`id` column) instead of creating additional indexes, since PowerSync tables are implemented as views and cannot have indexes created on them.
 
 ## Important Notes
 
@@ -96,20 +96,19 @@ Tables t3, t7, t9, t10, and t13 also include indexes on column `a` and/or `b`.
 
 ## Benchmark Tests
 
-All 15 standard SQLite benchmark tests are available:
+All 14 standard SQLite benchmark tests are available:
 
 - Test 1: 1000 INSERTs
 - Test 2: 25000 INSERTs in a transaction
-- Test 3: 25000 INSERTs into an indexed table
 - Test 4: 100 SELECTs without an index
 - Test 5: 100 SELECTs on a string comparison
-- Test 7: 5000 SELECTs with an index
+- Test 7: 5000 SELECTs using primary key
 - Test 8: 1000 UPDATEs without an index
-- Test 9: 25000 UPDATEs with an index
-- Test 10: 25000 text UPDATEs with an index
+- Test 9: 25000 UPDATEs using primary key
+- Test 10: 25000 text UPDATEs using primary key
 - Test 11: INSERTs from a SELECT
 - Test 12: DELETE without an index
-- Test 13: DELETE with an index
+- Test 13: DELETE using primary key
 - Test 14: A big INSERT after a big DELETE
 - Test 15: A big DELETE followed by many small INSERTs
 - Test 16: Clear table

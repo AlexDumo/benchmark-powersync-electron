@@ -11,7 +11,7 @@ export interface BenchmarkResult {
 
 export class BenchmarkRunner {
   private db: PowerSyncDatabase;
-  private allTestNumbers = [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+  private allTestNumbers = [1, 2, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
 
   constructor(db: PowerSyncDatabase) {
     this.db = db;
@@ -36,9 +36,9 @@ export class BenchmarkRunner {
       await this.db.execute(sql);
     }
 
-    const duration = performance.now() - startTime;
+    const duration = (performance.now() - startTime) / 1000;
 
-    console.log(`   ✅ Completed in ${duration.toFixed(2)}ms`);
+    console.log(`   ✅ Completed in ${duration.toFixed(2)}s`);
 
     return {
       testNumber: testNum,
@@ -72,10 +72,10 @@ export class BenchmarkRunner {
   }
 
   async runQuickTests(seed = 42): Promise<BenchmarkResult[]> {
-    console.log('\n🎯 Running Quick Tests (1-3)');
+    console.log('\n🎯 Running Quick Tests (1, 2, 4)');
     console.log('='.repeat(60));
 
-    const quickTests = [1, 2, 3];
+    const quickTests = [1, 2, 4];
     const results: BenchmarkResult[] = [];
 
     for (const testNum of quickTests) {
@@ -100,14 +100,14 @@ export class BenchmarkRunner {
     console.log('\n📈 Benchmark Summary');
     console.log('='.repeat(60));
     console.log(`Total tests: ${results.length}`);
-    console.log(`Total time: ${totalTime.toFixed(2)}ms`);
+    console.log(`Total time: ${totalTime.toFixed(2)}s`);
     console.log(`Total statements: ${totalStatements}`);
-    console.log(`Average time per test: ${averageTime.toFixed(2)}ms`);
+    console.log(`Average time per test: ${averageTime.toFixed(2)}s`);
 
     console.log('\nDetailed Results:');
     console.log('-'.repeat(60));
     results.forEach(r => {
-      console.log(`  Test ${r.testNumber}: ${r.duration.toFixed(2).padStart(10)}ms - ${r.testDescription}`);
+      console.log(`  Test ${r.testNumber}: ${r.duration.toFixed(2).padStart(10)}s - ${r.testDescription}`);
     });
     console.log('='.repeat(60));
   }
